@@ -62,7 +62,6 @@ void User :: createUser(void) {
     }
 
     long long accountNo = generateRandom8DigitInt();
-    long long id;
 
     this -> id = User :: id;
     this -> name = name;

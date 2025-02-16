@@ -38,6 +38,8 @@ int main() {
             User newUser;
             newUser.createUser();
             newUser.displayUser();
+            
+            choice = 5;
         }
 
         if(choice == 5) {
