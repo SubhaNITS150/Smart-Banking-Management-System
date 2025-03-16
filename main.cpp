@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 #include "User/User.h"
-// #include "AdminPanel/AdminPanel.h"
+#include "AdminPanel/AdminPanel.h"
 using namespace std;
 
 void printHeader()
@@ -44,6 +44,7 @@ int main()
         {
             User newUser;
             newUser.createUser();
+            User :: userLists.push_back(newUser);
             newUser.displayUser();
 
             choice = 5;
@@ -61,6 +62,13 @@ int main()
             cout << "4. Admin Panel " << endl;
             cout << "5. Exit " << endl;
             cout << "6. Back " << endl;
+        }
+
+        //test
+
+        if(choice == 100) {
+            AdminPanel adminPanel;
+            adminPanel.showUsers();
         }
 
         cin >> choice;

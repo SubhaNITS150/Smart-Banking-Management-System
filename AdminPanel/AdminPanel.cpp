@@ -9,10 +9,6 @@ int main()
 
     string password = newPanel.getPassword();
 
-    User::userLists.push_back("Subhajyoti");
-    User::userLists.push_back("Niloy");
-    User::userLists.push_back("Rafi");
-
     if (password == "Subha@2910")
     {
         cout << "You are authorized! " << endl;

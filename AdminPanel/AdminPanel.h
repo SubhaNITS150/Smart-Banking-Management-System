@@ -7,11 +7,12 @@ using namespace std;
 
 class User;
 
-class AdminPanel
-{
+class AdminPanel {
+
 public:
     void showAdminPanel(void);
     void showUsers(void);
+    void deleteUser(int id);
     string getPassword(void);
 };
 
@@ -22,7 +23,6 @@ void AdminPanel ::showAdminPanel(void)
     cout << "2. Delete User" << endl;
     cout << "3. Back to Main Menu" << endl;
 
-    showUsers();
 }
 
 string AdminPanel ::getPassword(void)
@@ -34,11 +34,9 @@ string AdminPanel ::getPassword(void)
     return password;
 }
 
-void AdminPanel ::showUsers(void)
-{
-    for (int i = 0; i < User::userLists.size(); i++)
-    {
-        cout << User::userLists[i] << endl;
+void AdminPanel :: showUsers(void) {
+    for(const auto &user : User :: userLists){
+        cout << user.id << " " << user.name << endl;
     }
 }
 

@@ -3,7 +3,7 @@
 
 #include<bits/stdc++.h>
 #include<random>
-#include "../AdminPanel/AdminPanel.h"
+// #include "../AdminPanel/AdminPanel.h"
 using namespace std;
 
 
@@ -20,12 +20,12 @@ class User {
 
     public:
 
-    static vector<string> userLists;
+    static vector<User> userLists;
     void createUser(void);
     void displayUser(void);
     void depositMoney(void);
 
-    // friend void AdminPanel::showUsers();
+    friend class AdminPanel;
 };
 
 //Account Number generator
@@ -40,7 +40,7 @@ long long generateRandom8DigitInt() {
 
 //constants
 long long User :: id = 1;
-vector<string> User::userLists;
+vector<User> User::userLists;
 
 void User :: createUser(void) {
     string name;
@@ -83,7 +83,6 @@ void User :: createUser(void) {
     this -> branchName = branchName;
     this -> balance = balance;
 
-    userLists.push_back(name);
     id += 1;
 }
 
