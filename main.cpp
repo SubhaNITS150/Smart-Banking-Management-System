@@ -44,14 +44,33 @@ int main()
         {
             User newUser;
             newUser.createUser();
-            User :: userLists.push_back(newUser);
+            User ::userLists.push_back(newUser);
             newUser.displayUser();
 
             choice = 5;
         }
 
-        if(choice == 4) {
-            
+        if (choice == 4)
+        {
+            AdminPanel adminPanel;
+
+            cout << "Weclome to Admin Panel" << endl;
+            cout << "1. View Account" << endl;
+            cout << "2. Delete Account" << endl;
+            cout << "3. List All Accounts" << endl;
+
+            string password = adminPanel.getPassword();
+
+            if (password == "Subha@2910")
+            {
+                cout << "You are authorized! " << endl;
+                adminPanel.showAdminPanel();
+            }
+
+            else
+            {
+                cout << "You are not an admin!" << endl;
+            }
         }
 
         if (choice == 5)
@@ -62,13 +81,6 @@ int main()
             cout << "4. Admin Panel " << endl;
             cout << "5. Exit " << endl;
             cout << "6. Back " << endl;
-        }
-
-        //test
-
-        if(choice == 100) {
-            AdminPanel adminPanel;
-            adminPanel.showUsers();
         }
 
         cin >> choice;

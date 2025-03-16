@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../User/User.h"
+#include <iomanip>
 using namespace std;
 
 class User;
@@ -21,8 +22,16 @@ void AdminPanel ::showAdminPanel(void)
     cout << "Welcome to the Admin Panel" << endl;
     cout << "1. View Users" << endl;
     cout << "2. Delete User" << endl;
-    cout << "3. Back to Main Menu" << endl;
+    cout << "3. Find User" << endl;
+    cout << "4. Back to Main Menu" << endl;
 
+    cout << "Enter what you want to do:- " << endl;
+    int choice;
+    cin >> choice;
+
+    if(choice == 1){
+        showUsers();
+    }
 }
 
 string AdminPanel ::getPassword(void)
@@ -35,9 +44,25 @@ string AdminPanel ::getPassword(void)
 }
 
 void AdminPanel :: showUsers(void) {
-    for(const auto &user : User :: userLists){
-        cout << user.id << " " << user.name << endl;
+    cout << "\n----------------------------------------------------------------\n";
+    cout << setw(10) << left << "ID" 
+         << setw(20) << left << "Name" 
+         << setw(20) << left << "Account Number" 
+         << setw(15) << left << "Balance" << endl;
+    cout << "----------------------------------------------------------------\n";
+
+    for (const auto &user : User::userLists) {
+        cout << setw(10) << left << user.id 
+             << setw(20) << left << user.name 
+             << setw(20) << left << user.accountNo 
+             << setw(15) << left << user.balance << endl;
     }
+
+    cout << "----------------------------------------------------------------\n";
+}
+
+void AdminPanel :: deleteUser(int id){
+    
 }
 
 #endif
