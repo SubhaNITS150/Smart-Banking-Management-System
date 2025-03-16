@@ -1,6 +1,13 @@
+#ifndef USER_H
+#define USER_H
+
 #include<bits/stdc++.h>
 #include<random>
+#include "../AdminPanel/AdminPanel.h"
 using namespace std;
+
+
+class AdminPanel;
 
 class User {
     string name;
@@ -9,12 +16,16 @@ class User {
     string accountType;
     string branchName;
     double balance;
+    
 
     public:
 
+    static vector<string> userLists;
     void createUser(void);
     void displayUser(void);
     void depositMoney(void);
+
+    // friend void AdminPanel::showUsers();
 };
 
 //Account Number generator
@@ -27,7 +38,9 @@ long long generateRandom8DigitInt() {
     return distribution(generator);
 }
 
+//constants
 long long User :: id = 1;
+vector<string> User::userLists;
 
 void User :: createUser(void) {
     string name;
@@ -70,6 +83,7 @@ void User :: createUser(void) {
     this -> branchName = branchName;
     this -> balance = balance;
 
+    userLists.push_back(name);
     id += 1;
 }
 
@@ -103,3 +117,4 @@ void User :: displayUser(void) {
     cout << "HAPPY BANKING WITH US!" << endl;
 }
 
+#endif
