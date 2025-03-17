@@ -11,6 +11,7 @@ class AdminPanel;
 
 class User {
     string name;
+    long long userId;
     static long long id;
     unsigned long long accountNo;  
     string accountType;
@@ -83,7 +84,9 @@ void User :: createUser(void) {
     this -> branchName = branchName;
     this -> balance = balance;
 
-    id += 1;
+    userId = id++;
+    User ::userLists.push_back(*this);
+    
 }
 
 void User :: depositMoney(void){
@@ -106,7 +109,7 @@ void User :: displayUser(void) {
     cout << "Details:- " << endl;
     cout << endl;
 
-    cout << "ID:- " << id << endl;
+    cout << "ID:- " << userId << endl;
     cout << "Name:- " << name << endl;
     cout << "Account Number:- " << accountNo << endl;
     cout << "Branch Name:- " << branchName << endl;

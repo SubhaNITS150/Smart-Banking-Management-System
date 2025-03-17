@@ -52,7 +52,7 @@ void AdminPanel :: showUsers(void) {
     cout << "----------------------------------------------------------------\n";
 
     for (const auto &user : User::userLists) {
-        cout << setw(10) << left << user.id 
+        cout << setw(10) << left << user.userId 
              << setw(20) << left << user.name 
              << setw(20) << left << user.accountNo 
              << setw(15) << left << user.balance << endl;

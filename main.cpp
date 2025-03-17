@@ -44,7 +44,7 @@ int main()
         {
             User newUser;
             newUser.createUser();
-            User ::userLists.push_back(newUser);
+            
             newUser.displayUser();
 
             choice = 5;
