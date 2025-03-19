@@ -2,8 +2,9 @@
 #define USER_H
 
 #include<bits/stdc++.h>
+#include<iomanip>
 #include<random>
-// #include "../AdminPanel/AdminPanel.h"
+
 using namespace std;
 
 
@@ -17,7 +18,7 @@ class User {
     string accountType;
     string branchName;
     double balance;
-    
+    int password;
 
     public:
 
@@ -25,6 +26,8 @@ class User {
     void createUser(void);
     void displayUser(void);
     void depositMoney(void);
+    void setPassword(void);
+    void withdrawMoney(void);
 
     friend class AdminPanel;
 };
@@ -84,8 +87,20 @@ void User :: createUser(void) {
     this -> branchName = branchName;
     this -> balance = balance;
 
+    setPassword();
+
     userId = id++;
     User ::userLists.push_back(*this);
+    
+}
+
+void User :: setPassword(void){
+    cout << "Enter Password" << endl;
+    string password;
+    cin >> password;
+}
+
+void User :: withdrawMoney(void) {
     
 }
 
@@ -103,20 +118,22 @@ void User :: depositMoney(void){
 
 void User :: displayUser(void) {
     cout << endl;
-    cout << "Bank Account created Successfully!" << endl;
-    cout << endl;
-
-    cout << "Details:- " << endl;
-    cout << endl;
-
-    cout << "ID:- " << userId << endl;
-    cout << "Name:- " << name << endl;
-    cout << "Account Number:- " << accountNo << endl;
-    cout << "Branch Name:- " << branchName << endl;
-    cout << "Balance:- " << balance << endl;
-
-    cout << endl;
-    cout << "HAPPY BANKING WITH US!" << endl;
+    cout << "===============================================" << endl;
+    cout << "|     Bank Account Created Successfully! |" << endl;
+    cout << "===============================================" << endl;
+    cout << "| " << setw(15) << left << "ID" 
+         << "| " << setw(20) << left << userId << " |" << endl;
+    cout << "| " << setw(15) << left << "Name" 
+         << "| " << setw(20) << left << name << " |" << endl;
+    cout << "| " << setw(15) << left << "Account Number" 
+         << "| " << setw(20) << left << accountNo << " |" << endl;
+    cout << "| " << setw(15) << left << "Branch Name" 
+         << "| " << setw(20) << left << branchName << " |" << endl;
+    cout << "| " << setw(15) << left << "Balance" 
+         << "| " << setw(20) << left << fixed << setprecision(2) << balance << " |" << endl;
+    cout << "===============================================" << endl;
+    cout << "|           HAPPY BANKING WITH US!            |" << endl;
+    cout << "===============================================" << endl;
 }
 
 #endif

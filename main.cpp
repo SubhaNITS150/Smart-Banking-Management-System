@@ -19,15 +19,16 @@ int main()
     cout << endl;
     cout << endl;
 
-    cout << "Enter what you want to do today:- " << endl;
-
-    cout << endl;
-    cout << "1. Create an Account " << endl;
-    cout << "2. Deposit Amount " << endl;
-    cout << "3. Withdraw Amount " << endl;
-    cout << "4. Admin Panel " << endl;
-    cout << "5. Exit " << endl;
-    cout << "6. Back " << endl;
+    cout << "===============================================" << endl;
+    cout << "|        What do you want to do today?        |" << endl;
+    cout << "===============================================" << endl;
+    cout << "| " << setw(2) << "1." << " Create an Account             |" << endl;
+    cout << "| " << setw(2) << "2." << " Deposit Amount                |" << endl;
+    cout << "| " << setw(2) << "3." << " Withdraw Amount               |" << endl;
+    cout << "| " << setw(2) << "4." << " Admin Panel                   |" << endl;
+    cout << "| " << setw(2) << "5." << " Exit                          |" << endl;
+    cout << "| " << setw(2) << "6." << " Back                          |" << endl;
+    cout << "===============================================" << endl;
 
     int choice;
     cin >> choice;
@@ -44,7 +45,6 @@ int main()
         {
             User newUser;
             newUser.createUser();
-            
             newUser.displayUser();
 
             choice = 5;
@@ -53,11 +53,6 @@ int main()
         if (choice == 4)
         {
             AdminPanel adminPanel;
-
-            cout << "Weclome to Admin Panel" << endl;
-            cout << "1. View Account" << endl;
-            cout << "2. Delete Account" << endl;
-            cout << "3. List All Accounts" << endl;
 
             string password = adminPanel.getPassword();
 
@@ -70,6 +65,7 @@ int main()
             else
             {
                 cout << "You are not an admin!" << endl;
+                choice = 5;
             }
         }
 

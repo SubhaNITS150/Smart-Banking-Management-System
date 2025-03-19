@@ -13,7 +13,7 @@ class AdminPanel {
 public:
     void showAdminPanel(void);
     void showUsers(void);
-    void deleteUser(int id);
+    void deleteUser(void);
     string getPassword(void);
 };
 
@@ -31,6 +31,10 @@ void AdminPanel ::showAdminPanel(void)
 
     if(choice == 1){
         showUsers();
+    }
+
+    if(choice == 2){
+        deleteUser();
     }
 }
 
@@ -61,8 +65,22 @@ void AdminPanel :: showUsers(void) {
     cout << "----------------------------------------------------------------\n";
 }
 
-void AdminPanel :: deleteUser(int id){
-    
+void AdminPanel :: deleteUser(){
+    int getID;
+    cout << "Enter ID:- " << endl;
+    cin >> getID;
+
+    auto it = find_if(User :: userLists.begin(), User :: userLists.end(), [&](const User &user)
+    {
+        return user.userId == getID;
+    });
+
+    if (it != User::userLists.end()) {
+        User::userLists.erase(it);
+        cout << "User deleted successfully." << endl;
+    } else {
+        cout << "ID not found!" << endl;
+    }
 }
 
 #endif
