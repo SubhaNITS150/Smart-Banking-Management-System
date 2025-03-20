@@ -120,25 +120,39 @@ void User :: withdrawMoney(void) {
             return;
         }
 
+
         else{
             it -> balance -= amt;
+            cout << "Amount Withdrawn Successfully" << endl;
+            cout << "Balance:- " << it -> balance << endl;
+            return;
         }
     }
     else{
         cout << "User not found" << endl;
+        return;
     }
 }
 
 void User :: depositMoney(void){
+    int getID;
+    cout << "Enter ID:- " << endl;
+    cin >> getID;
 
-    cout << "Enter the money you want to deposit:- " << endl;
-    double amount;
-    cin >> amount;
+    auto it = find_if(User :: userLists.begin(), User :: userLists.end(), [&](const User &user)
+    {
+        return user.userId == getID;
+    });
 
-    balance += amount;
-    cout << "Amount added Successfully!" << endl;
-    cout << endl;
-    cout << "Available Balance:- " << balance << endl;
+    if(it != User :: userLists.end()){
+        double amt;
+        cout << "Enter amount you want to withdraw:- " << endl;
+        cin >> amt;
+
+        it -> balance += amt;
+        cout << "Amount Added Successfully" << endl;
+        cout << "Balance:- " << it -> balance << endl;
+    }
 }
 
 void User :: displayUser(void) {

@@ -16,6 +16,7 @@ public:
     void deleteUser(void);
     void findUser(void);
     void changePassword(void);
+    void updateUserDetails(void);
     string getPassword(void);
 };
 
@@ -26,7 +27,8 @@ void AdminPanel ::showAdminPanel(void)
     cout << "2. Delete User" << endl;
     cout << "3. Find User" << endl;
     cout << "4. Change Password of an User" << endl;
-    cout << "5. Back to Main Menu" << endl;
+    cout << "5. Update User Details" << endl;
+    cout << "6. Back to Main Menu" << endl;
 
     cout << "Enter what you want to do:- " << endl;
     int choice;
@@ -48,12 +50,16 @@ void AdminPanel ::showAdminPanel(void)
         changePassword();
     }
 
+    if(choice == 5){
+        updateUserDetails();
+    } 
+
     else{
         showAdminPanel();
     }
 }
 
-string AdminPanel ::getPassword(void)
+string AdminPanel :: getPassword(void)
 {
     cout << "Enter password to Access Admin Panel: " << endl;
     string password;
@@ -144,6 +150,46 @@ void AdminPanel :: changePassword(void){
         it -> password = pass;
         cout << "New Password" << endl;
         cout << it -> password << endl;
+    }
+}
+
+void AdminPanel :: updateUserDetails(void){
+    int getID;
+    cout << "Enter ID:- " << endl;
+    cin >> getID;
+
+    auto it = find_if(User :: userLists.begin(), User :: userLists.end(), [&](const User &user)
+    {
+        return user.userId == getID;
+    });
+
+    if (it != User::userLists.end()) {
+        string name;
+        cin >> name;
+        cout << "Enter name:- " << endl;
+        it -> name = name;
+
+        string accountType;
+        cin >> accountType;
+        cout << "Enter account type:- " << endl;
+        it -> accountType = accountType;
+
+        string branchName;
+        cin >> branchName;
+        cout << "Enter branch name:- " << endl;
+        it -> branchName = branchName;
+
+        cout << "Updated Details:- " << endl;
+
+        cout << "\n---------------------------------------------\n";
+            cout << setw(10) << "ID" << setw(20) << "Name" << setw(20) 
+                 << "Account No" << setw(20) << "Account Type" << setw(15) 
+                 << "Branch" << setw(12) << "Balance" << endl;
+            cout << "---------------------------------------------\n";
+            cout << setw(10) << it->userId << setw(20) << it->name << setw(20) 
+                 << it->accountNo << setw(20) << it->accountType << setw(15) 
+                 << it->branchName << setw(12) << fixed << setprecision(2) << it->balance << endl;
+            cout << "---------------------------------------------\n";
     }
 }
 
