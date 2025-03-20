@@ -47,6 +47,10 @@ void AdminPanel ::showAdminPanel(void)
     if(choice == 4){
         changePassword();
     }
+
+    else{
+        showAdminPanel();
+    }
 }
 
 string AdminPanel ::getPassword(void)

@@ -32,8 +32,6 @@ class User {
     friend class AdminPanel;
 };
 
-//Account Number generator
-
 long long generateRandom8DigitInt() {
     random_device rd;
     mt19937 generator(rd());  
@@ -42,10 +40,12 @@ long long generateRandom8DigitInt() {
     return distribution(generator);
 }
 
-//constants
+//------------------------constants---------------------------------
 long long User :: id = 1;
 vector<User> User::userLists;
 
+
+//--------------------------Functions--------------------------------
 void User :: createUser(void) {
     string name;
     cout << "Enter your name:- " << endl;
@@ -101,7 +101,32 @@ void User :: setPassword(void){
 }
 
 void User :: withdrawMoney(void) {
-    
+    int getID;
+    cout << "Enter ID:- " << endl;
+    cin >> getID;
+
+    auto it = find_if(User :: userLists.begin(), User :: userLists.end(), [&](const User &user)
+    {
+        return user.userId == getID;
+    });
+
+    if(it != User :: userLists.end()){
+        double amt;
+        cout << "Enter amount you want to withdraw:- " << endl;
+        cin >> amt;
+
+        if(amt > (it -> balance)){
+            cout << "Insufficient balance";
+            return;
+        }
+
+        else{
+            it -> balance -= amt;
+        }
+    }
+    else{
+        cout << "User not found" << endl;
+    }
 }
 
 void User :: depositMoney(void){
