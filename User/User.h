@@ -18,7 +18,7 @@ class User {
     string accountType;
     string branchName;
     double balance;
-    int password;
+    string password;
 
     public:
 
