@@ -30,10 +30,12 @@ class User {
     void setPassword(void);
     void withdrawMoney(void);
 
+    static void initializeID(const string& filename);
+
     friend class AdminPanel;
 };
 
-//-----------------utility functions---------------------------
+//----------------utility functions---------------------------
 
 long long generateRandom8DigitInt() {
     random_device rd;
@@ -54,7 +56,45 @@ vector<User> User::userLists;
 
 
 //--------------------------Functions--------------------------------
+
+void User :: initializeID(const string& filename) {
+    ifstream file(filename);
+
+    if(!file.is_open()){
+        cout << "Error opening file" << endl;
+        return;
+    }
+
+    string line, lastLine;
+    while(getline(file, line)){
+        if (!line.empty() && line.find_first_not_of(" \t") != string::npos) {
+            lastLine = line;
+        }
+    }
+
+    file.close();
+
+    if(!lastLine.empty()){
+        stringstream ss(lastLine);
+        string idStr;
+
+        getline(ss, idStr, ',');
+
+        try{
+            id = stoll(idStr) + 1;
+        }
+
+        catch(const exception& e){
+            cout << "ID not fetched" << endl;
+            id = 1;
+        }
+    }
+}
+
 void User :: createUser(void) {
+
+    User::initializeID("userlists.csv");
+    
     string name;
     cout << "Enter your name:- " << endl;
     cin >> name;
@@ -114,15 +154,15 @@ void User :: createUser(void) {
     
 
         file << userId << "," 
-            << accountNo << "," 
-            << name << "," 
-            << accountType << "," 
-            << branchName << "," 
-            << balance << "\n";
+             << accountNo << "," 
+             << name << "," 
+             << accountType << "," 
+             << branchName << "," 
+             << balance << "\n";
 
-            file.close();
+        file.close();
 
-            cout << "Data Saved Successfully" << endl;
+        cout << "Data Saved Successfully" << endl;
     
 }
 
