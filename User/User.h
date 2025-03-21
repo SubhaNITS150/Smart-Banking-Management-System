@@ -3,6 +3,7 @@
 
 #include<bits/stdc++.h>
 #include<iomanip>
+#include<fstream>
 #include<random>
 
 using namespace std;
@@ -32,12 +33,19 @@ class User {
     friend class AdminPanel;
 };
 
+//-----------------utility functions---------------------------
+
 long long generateRandom8DigitInt() {
     random_device rd;
     mt19937 generator(rd());  
     uniform_int_distribution<long long> distribution(10000000, 99999999); 
 
     return distribution(generator);
+}
+
+bool isFileEmpty(const string& filename){
+    ifstream file(filename);
+    return file.peek() == ifstream::traits_type::eof();
 }
 
 //------------------------constants---------------------------------
@@ -91,6 +99,30 @@ void User :: createUser(void) {
 
     userId = id++;
     User ::userLists.push_back(*this);
+
+    ofstream file("userlists.csv", ios::app);
+
+    if(!file.is_open()){
+        cout << "Error opening file" << endl;
+        return;
+    }
+
+    if(isFileEmpty("userlists.csv")){
+        file << "ID, Account Number, Name, Account Type, Branch Name, Balance\n" ;
+
+    }
+    
+
+        file << userId << "," 
+            << accountNo << "," 
+            << name << "," 
+            << accountType << "," 
+            << branchName << "," 
+            << balance << "\n";
+
+            file.close();
+
+            cout << "Data Saved Successfully" << endl;
     
 }
 
