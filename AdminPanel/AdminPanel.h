@@ -4,6 +4,7 @@
 #include <iostream>
 #include "../User/User.h"
 #include <iomanip>
+#include<conio.h>
 using namespace std;
 
 class User;
@@ -71,8 +72,23 @@ void AdminPanel ::showAdminPanel(void)
 string AdminPanel ::getPassword(void)
 {
     cout << "Enter password to Access Admin Panel: " << endl;
-    string password;
-    cin >> password;
+    string password = "";
+    char ch;
+    // cin >> password;
+
+    while((ch = _getch()) != '\r'){
+        if(ch == '\b'){
+            if(!password.empty()){
+                cout << "\b \b";
+                password.pop_back();
+            }
+        }
+        else{
+            password += ch;
+            cout << "*";
+        }
+    }
+    cout << endl;
 
     return password;
 }
@@ -80,7 +96,7 @@ string AdminPanel ::getPassword(void)
 void AdminPanel ::showUsers(void)
 {
     loadUsersFromCSV();
-    
+
     cout << "\n----------------------------------------------------------------\n";
     cout << setw(10) << left << "ID"
          << setw(20) << left << "Name"
@@ -205,11 +221,14 @@ void AdminPanel ::findUser()
     cout << "Enter ID:- " << endl;
     cin >> getID;
 
+    loadUsersFromCSV();
+
     auto it = find_if(User ::userLists.begin(), User ::userLists.end(), [&](const User &user)
                       { return user.userId == getID; });
 
-    if (it != User::userLists.end())
+    if (it != User::userLists.end() && it -> isMember)
     {
+        
         cout << "\n---------------------------------------------\n";
         cout << setw(10) << "ID" << setw(20) << "Name" << setw(20)
              << "Account No" << setw(20) << "Account Type" << setw(15)
