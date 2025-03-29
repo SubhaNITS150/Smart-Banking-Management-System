@@ -50,7 +50,8 @@ int main()
             choice = 5;
         }
 
-        if(choice == 3){
+        if (choice == 3)
+        {
             User user;
             user.withdrawMoney();
         }

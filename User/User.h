@@ -20,6 +20,7 @@ class User {
     string branchName;
     double balance;
     string password;
+    bool isMember;
 
     public:
 
@@ -136,6 +137,7 @@ void User :: createUser(void) {
     this -> balance = balance;
 
     setPassword();
+    isMember = true;
 
     userId = id++;
     User ::userLists.push_back(*this);
@@ -148,7 +150,7 @@ void User :: createUser(void) {
     }
 
     if(isFileEmpty("userlists.csv")){
-        file << "ID, Account Number, Name, Account Type, Branch Name, Balance\n" ;
+        file << "ID, Account Number, Name, Account Type, Branch Name, Balance, Membership\n" ;
 
     }
     
@@ -158,7 +160,8 @@ void User :: createUser(void) {
              << name << "," 
              << accountType << "," 
              << branchName << "," 
-             << balance << "\n";
+             << balance << ","
+             << (isMember ? "Yes" : "No") << "\n";
 
         file.close();
 
