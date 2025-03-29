@@ -79,6 +79,8 @@ string AdminPanel ::getPassword(void)
 
 void AdminPanel ::showUsers(void)
 {
+    loadUsersFromCSV();
+    
     cout << "\n----------------------------------------------------------------\n";
     cout << setw(10) << left << "ID"
          << setw(20) << left << "Name"
@@ -88,10 +90,12 @@ void AdminPanel ::showUsers(void)
 
     for (const auto &user : User::userLists)
     {
-        cout << setw(10) << left << user.userId
-             << setw(20) << left << user.name
-             << setw(20) << left << user.accountNo
-             << setw(15) << left << user.balance << endl;
+        if(user.isMember){
+            cout << setw(10) << left << user.userId
+                 << setw(20) << left << user.name
+                 << setw(20) << left << user.accountNo
+                 << setw(15) << left << user.balance << endl;
+        }
     }
 
     cout << "----------------------------------------------------------------\n";
