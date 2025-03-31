@@ -5,6 +5,7 @@
 #include<iomanip>
 #include<fstream>
 #include<random>
+#include "TransactionHistory/TransactionHistory.h";
 
 using namespace std;
 
@@ -21,6 +22,7 @@ class User {
     double balance;
     string password;
     bool isMember;
+    vector<TransactionHistory> listTransactions;
 
     public:
 
