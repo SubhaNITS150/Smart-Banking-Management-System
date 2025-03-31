@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 #include "User/User.h"
 #include "AdminPanel/AdminPanel.h"
+#include "TransactionHistory/TransactionHistory.h"
+
 using namespace std;
 
 void printHeader()
@@ -28,6 +30,7 @@ int main()
     cout << "| " << setw(2) << "4." << " Admin Panel                   |" << endl;
     cout << "| " << setw(2) << "5." << " Exit                          |" << endl;
     cout << "| " << setw(2) << "6." << " Back                          |" << endl;
+    cout << "| " << setw(2) << "7." << " Transaction Options                          |" << endl;
     cout << "===============================================" << endl;
 
     int choice;
@@ -77,12 +80,19 @@ int main()
 
         if (choice == 5)
         {
-            cout << "1. Create an Account " << endl;
-            cout << "2. Deposit Amount " << endl;
-            cout << "3. Withdraw Amount " << endl;
-            cout << "4. Admin Panel " << endl;
-            cout << "5. Exit " << endl;
-            cout << "6. Back " << endl;
+            cout << "| " << setw(2) << "1." << " Create an Account             |" << endl;
+            cout << "| " << setw(2) << "2." << " Deposit Amount                |" << endl;
+            cout << "| " << setw(2) << "3." << " Withdraw Amount               |" << endl;
+            cout << "| " << setw(2) << "4." << " Admin Panel                   |" << endl;
+            cout << "| " << setw(2) << "5." << " Exit                          |" << endl;
+            cout << "| " << setw(2) << "6." << " Back                          |" << endl;
+            cout << "| " << setw(2) << "7." << " Transaction Options                          |" << endl;
+            cout << "===============================================" << endl;
+        }
+
+        if(choice == 7){
+            TransactionHistory newTransaction;
+            newTransaction.showTransactionOptions();
         }
 
         cin >> choice;

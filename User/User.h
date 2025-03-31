@@ -1,22 +1,29 @@
+
+
+#include <bits/stdc++.h>
+#include <iomanip>
+#include <fstream>
+#include <random>
+// #include "../AdminPanel/AdminPanel.h"
+#include "../TransactionHistory/TransactionHistory.h"
+
 #ifndef USER_H
 #define USER_H
-
-#include<bits/stdc++.h>
-#include<iomanip>
-#include<fstream>
-#include<random>
-#include "TransactionHistory/TransactionHistory.h";
-
 using namespace std;
 
-
 class AdminPanel;
+class TransactionHistory;
 
-class User {
+class User
+{
     string name;
+
+protected:
     long long userId;
+
+private:
     static long long id;
-    unsigned long long accountNo;  
+    unsigned long long accountNo;
     string accountType;
     string branchName;
     double balance;
@@ -24,8 +31,7 @@ class User {
     bool isMember;
     vector<TransactionHistory> listTransactions;
 
-    public:
-
+public:
     static vector<User> userLists;
     void createUser(void);
     void displayUser(void);
@@ -33,71 +39,72 @@ class User {
     void setPassword(void);
     void withdrawMoney(void);
 
-    static void initializeID(const string& filename);
-
+    static void initializeID(const string &filename);
+    // long long getUserId() const { return userId; }
+    friend class TransactionHistory;
     friend class AdminPanel;
 };
 
 //----------------utility functions---------------------------
 
-long long generateRandom8DigitInt() {
-    random_device rd;
-    mt19937 generator(rd());  
-    uniform_int_distribution<long long> distribution(10000000, 99999999); 
-
-    return distribution(generator);
-}
-
-bool isFileEmpty(const string& filename){
+bool isFileEmpty(const string &filename)
+{
     ifstream file(filename);
     return file.peek() == ifstream::traits_type::eof();
 }
 
 //------------------------constants---------------------------------
-long long User :: id = 1;
+long long User ::id = 1;
 vector<User> User::userLists;
-
 
 //--------------------------Functions--------------------------------
 
-void User :: initializeID(const string& filename) {
+void User ::initializeID(const string &filename)
+{
     ifstream file(filename);
 
-    if(!file.is_open()){
+    if (!file.is_open())
+    {
         cout << "Error opening file" << endl;
         return;
     }
 
     string line, lastLine;
-    while(getline(file, line)){
-        if (!line.empty() && line.find_first_not_of(" \t") != string::npos) {
+    while (getline(file, line))
+    {
+        if (!line.empty() && line.find_first_not_of(" \t") != string::npos)
+        {
             lastLine = line;
         }
     }
 
     file.close();
 
-    if(!lastLine.empty()){
+    if (!lastLine.empty())
+    {
         stringstream ss(lastLine);
         string idStr;
 
         getline(ss, idStr, ',');
 
-        try{
+        try
+        {
             id = stoll(idStr) + 1;
         }
 
-        catch(const exception& e){
+        catch (const exception &e)
+        {
             cout << "ID not fetched" << endl;
             id = 1;
         }
     }
 }
 
-void User :: createUser(void) {
+void User ::createUser(void)
+{
 
     User::initializeID("userlists.csv");
-    
+
     string name;
     cout << "Enter your name:- " << endl;
     cin >> name;
@@ -116,7 +123,8 @@ void User :: createUser(void) {
     char choice;
     cin >> choice;
 
-    if(choice == 'y' || choice == 'Y'){
+    if (choice == 'y' || choice == 'Y')
+    {
         cout << "Enter balance:-\t";
         double amount;
         cin >> amount;
@@ -125,20 +133,25 @@ void User :: createUser(void) {
         balance += amount;
     }
 
-    else if(choice == 'n' || choice == 'N'){
+    else if (choice == 'n' || choice == 'N')
+    {
         balance = 0.00;
     }
 
-    long long accountNo = generateRandom8DigitInt();
+    cout << "Enter password:- " << endl;
+    string password;
+    cin >> password;
 
-    this -> id = User :: id;
-    this -> name = name;
-    this -> accountNo = accountNo;
-    this -> accountType = accountType;
-    this -> branchName = branchName;
-    this -> balance = balance;
+    this->id = User ::id;
+    this->name = name;
+    this->accountNo = accountNo;
+    this->accountType = accountType;
+    this->branchName = branchName;
+    this->balance = balance;
+    this -> password = password;
+    long long accountNo = 60012100 + id;
 
-    setPassword();
+    // setPassword();
     isMember = true;
 
     userId = id++;
@@ -146,106 +159,109 @@ void User :: createUser(void) {
 
     ofstream file("userlists.csv", ios::app);
 
-    if(!file.is_open()){
+    if (!file.is_open())
+    {
         cout << "Error opening file" << endl;
         return;
     }
 
-    if(isFileEmpty("userlists.csv")){
-        file << "ID, Account Number, Name, Account Type, Branch Name, Balance, Membership\n" ;
-
+    if (isFileEmpty("userlists.csv"))
+    {
+        file << "ID, Account Number, Name, Account Type, Branch Name, Balance, Membership, Password\n";
     }
-    
 
-        file << userId << "," 
-             << accountNo << "," 
-             << name << "," 
-             << accountType << "," 
-             << branchName << "," 
-             << balance << ","
-             << (isMember ? "Yes" : "No") << "\n";
+    file << userId << ","
+         << accountNo << ","
+         << name << ","
+         << accountType << ","
+         << branchName << ","
+         << balance << ","
+         << (isMember ? "Yes" : "No") << ","
+         << password << "\n";
 
-        file.close();
+    file.close();
 
-        cout << "Data Saved Successfully" << endl;
-    
+    cout << "Data Saved Successfully" << endl;
 }
 
-void User :: setPassword(void){
+void User ::setPassword(void)
+{
     cout << "Enter Password" << endl;
-    string password;
-    cin >> password;
+    cin >> this->password;
 }
 
-void User :: withdrawMoney(void) {
+void User ::withdrawMoney(void)
+{
     int getID;
     cout << "Enter ID:- " << endl;
     cin >> getID;
 
-    auto it = find_if(User :: userLists.begin(), User :: userLists.end(), [&](const User &user)
-    {
-        return user.userId == getID;
-    });
+    auto it = find_if(User ::userLists.begin(), User ::userLists.end(), [&](const User &user)
+                      { return user.userId == getID; });
 
-    if(it != User :: userLists.end()){
+    if (it != User ::userLists.end())
+    {
         double amt;
         cout << "Enter amount you want to withdraw:- " << endl;
         cin >> amt;
 
-        if(amt > (it -> balance)){
+        if (amt > (it->balance))
+        {
             cout << "Insufficient balance";
             return;
         }
 
-
-        else{
-            it -> balance -= amt;
+        else
+        {
+            it->balance -= amt;
             cout << "Amount Withdrawn Successfully" << endl;
-            cout << "Balance:- " << it -> balance << endl;
+            cout << "Balance:- " << it->balance << endl;
             return;
         }
     }
-    else{
+    else
+    {
         cout << "User not found" << endl;
         return;
     }
 }
 
-void User :: depositMoney(void){
+void User ::depositMoney(void)
+{
     int getID;
     cout << "Enter ID:- " << endl;
     cin >> getID;
 
-    auto it = find_if(User :: userLists.begin(), User :: userLists.end(), [&](const User &user)
-    {
-        return user.userId == getID;
-    });
+    auto it = find_if(User ::userLists.begin(), User ::userLists.end(), [&](const User &user)
+                      { return user.userId == getID; });
 
-    if(it != User :: userLists.end()){
+    if (it != User ::userLists.end())
+    {
         double amt;
         cout << "Enter amount you want to withdraw:- " << endl;
         cin >> amt;
 
-        it -> balance += amt;
+        it->balance += amt;
         cout << "Amount Added Successfully" << endl;
-        cout << "Balance:- " << it -> balance << endl;
+        cout << "Balance:- " << it->balance << endl;
     }
 }
 
-void User :: displayUser(void) {
+void User ::displayUser(void)
+{
     cout << endl;
     cout << "===============================================" << endl;
     cout << "|     Bank Account Created Successfully! |" << endl;
     cout << "===============================================" << endl;
-    cout << "| " << setw(15) << left << "ID" 
+    cout << "| " << setw(15) << left << "ID"
          << "| " << setw(20) << left << userId << " |" << endl;
-    cout << "| " << setw(15) << left << "Name" 
+    cout << "| " << setw(15) << left << "Name"
          << "| " << setw(20) << left << name << " |" << endl;
-    cout << "| " << setw(15) << left << "Account Number" 
+    cout << "| " << setw(15) << left << "Account Number"
          << "| " << setw(20) << left << accountNo << " |" << endl;
-    cout << "| " << setw(15) << left << "Branch Name" 
+    cout << "| " << setw(15) << left << "Branch Name"
          << "| " << setw(20) << left << branchName << " |" << endl;
-    cout << "| " << setw(15) << left << "Balance" 
+    cout << "| " << setw(15) << left << "Balance"
          << "| " << setw(20) << left << fixed << setprecision(2) << balance << " |" << endl;
     cout << "===============================================" << endl;
     cout << "|           HAPPY BANKING WITH US!            |" << endl;

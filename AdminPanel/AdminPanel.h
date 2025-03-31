@@ -1,9 +1,7 @@
+#include "../User/User.h"
 #ifndef ADMINPANEL_H
 #define ADMINPANEL_H
 
-#include <iostream>
-#include "../User/User.h"
-#include <iomanip>
 #include<conio.h>
 using namespace std;
 
@@ -117,7 +115,7 @@ void AdminPanel ::showUsers(void)
     cout << "----------------------------------------------------------------\n";
 }
 
-void AdminPanel ::loadUsersFromCSV()
+void AdminPanel :: loadUsersFromCSV()
 {
     ifstream file("userlists.csv");
 
@@ -158,6 +156,9 @@ void AdminPanel ::loadUsersFromCSV()
         std::getline(stream, token, ',');
         user.isMember = (token == "Yes");
 
+        getline(stream, token, ',');
+        user.password = token;
+        
         User::userLists.push_back(user);
     }
 
