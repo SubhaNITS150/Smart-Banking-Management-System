@@ -18,7 +18,34 @@ public:
     void showTransactionOptions(void);
     void transferAmount(void);
     void loadUsersFromCSV(void);
+    void updateCSV(void);
 };
+
+void TransactionHistory :: updateCSV() {
+    ofstream file("userlists.csv", std::ios::trunc);
+
+    if (!file.is_open())
+    {
+        cerr << "Error opening file for writing!" << endl;
+        return;
+    }
+
+    file << "ID, Account Number, Name, Account Type, Branch Name, Balance, Membership, Password\n";
+
+    for (const auto &user : User::userLists)
+    {
+        file << user.userId << ","
+         << user.accountNo << ","
+         << user.name << ","
+         << user.accountType << ","
+         << user.branchName << ","
+         << user.balance << ","
+         << (user.isMember ? "Yes" : "No") << ","
+         << user.password << "\n";
+    }
+
+    file.close();
+}
 
 void TransactionHistory :: loadUsersFromCSV()
 {
@@ -130,8 +157,7 @@ void TransactionHistory ::transferAmount(void)
                     it2->balance += amount;
                     it->balance -= amount;
 
-                    cout << "Sender " << it->balance << endl;
-                    cout << "Reciever" << it2->balance << endl;
+                    updateCSV();
                 }
                 else
                 {

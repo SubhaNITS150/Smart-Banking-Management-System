@@ -158,7 +158,7 @@ void AdminPanel :: loadUsersFromCSV()
 
         getline(stream, token, ',');
         user.password = token;
-        
+
         User::userLists.push_back(user);
     }
 
@@ -175,17 +175,18 @@ void AdminPanel ::updateCSV()
         return;
     }
 
-    file << "ID, Account Number, Name, Account Type, Branch Name, Balance, Membership\n";
+    file << "ID, Account Number, Name, Account Type, Branch Name, Balance, Membership, Password\n";
 
     for (const auto &user : User::userLists)
     {
         file << user.userId << ","
-             << user.accountNo << ","
-             << user.name << ","
-             << user.accountType << ","
-             << user.branchName << ","
-             << user.balance << ","
-             << (user.isMember ? "Yes" : "No") << "\n";
+         << user.accountNo << ","
+         << user.name << ","
+         << user.accountType << ","
+         << user.branchName << ","
+         << user.balance << ","
+         << (user.isMember ? "Yes" : "No") << ","
+         << user.password << "\n";
     }
 
     file.close();
