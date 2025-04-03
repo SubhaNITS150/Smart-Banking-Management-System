@@ -19,6 +19,7 @@ public:
     void transferAmount(void);
     void loadUsersFromCSV(void);
     void updateCSV(void);
+    void transactionHistory(void);
 };
 
 void TransactionHistory :: updateCSV() {
@@ -185,4 +186,16 @@ void TransactionHistory ::transferAmount(void)
         return;
     }
 }
+
+void TransactionHistory :: transactionHistory(void){
+    loadUsersFromCSV();
+    cout << "Welcome to money transfer panel" << endl;
+    cout << "Enter ID " << endl;
+    int getID;
+    cin >> getID;
+
+    auto it = find_if(User ::userLists.begin(), User ::userLists.end(), [&](const User &user)
+                      { return user.userId == getID; });
+}
+
 #endif
