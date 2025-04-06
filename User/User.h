@@ -147,13 +147,14 @@ void User ::createUser(void)
 
     this->id = User ::id;
     this->name = name;
-    this->accountNo = accountNo;
+    
     this->accountType = accountType;
     this->branchName = branchName;
     this->balance = balance;
     this->password = password;
     long long accountNo = 60012100 + id;
-
+    this->accountNo = accountNo;
+    
     // setPassword();
     isMember = true;
 

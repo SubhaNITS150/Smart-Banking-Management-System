@@ -19,6 +19,7 @@ public:
     void updateUserDetails(void);
     void loadUsersFromCSV(void);
     void updateCSV(void);
+    void totalAmountInBank(void);
     string getPassword(void);
 };
 
@@ -31,6 +32,7 @@ void AdminPanel ::showAdminPanel(void)
     cout << "4. Change Password of an User" << endl;
     cout << "5. Update User Details" << endl;
     cout << "6. Back to Main Menu" << endl;
+    cout << "7. Display Total Amount in Bank" << endl;
 
     cout << "Enter what you want to do:- " << endl;
     int choice;
@@ -59,6 +61,10 @@ void AdminPanel ::showAdminPanel(void)
     if (choice == 5)
     {
         updateUserDetails();
+    }
+
+    if (choice == 7) {
+        totalAmountInBank();
     }
 
     else
@@ -309,6 +315,17 @@ void AdminPanel ::updateUserDetails(void)
              << it->branchName << setw(12) << fixed << setprecision(2) << it->balance << endl;
         cout << "---------------------------------------------\n";
     }
+}
+
+void AdminPanel :: totalAmountInBank(void) {
+    loadUsersFromCSV();
+    long long sum = 0;
+
+    for(auto it : User :: userLists) {
+        sum += it.balance;
+    }
+
+    cout << "Total amount in bank:- " << sum << endl;
 }
 
 #endif

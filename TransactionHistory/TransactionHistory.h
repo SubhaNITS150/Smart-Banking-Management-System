@@ -2,6 +2,7 @@
 #define TRANSACTIONHISTORY_H
 using namespace std;
 #include "../AdminPanel/AdminPanel.h"
+#include <chrono>
 
 class TransactionHistory
 {
@@ -23,6 +24,16 @@ public:
 };
 
 // ---------------------------Utility Functions----------------------------
+
+std::string getCurrentDateTime() {
+    auto now = std::chrono::system_clock::now();
+    std::time_t timeNow = std::chrono::system_clock::to_time_t(now);
+    std::tm* localTime = std::localtime(&timeNow);
+
+    std::ostringstream oss;
+    oss << std::put_time(localTime, "%Y-%m-%d %H:%M:%S");
+    return oss.str();
+}
 
 void updateCSV()
 {
@@ -142,7 +153,7 @@ void appendTransactionToCSV(const User &user, const string &filename, const Tran
     else
     {
         file.open(filename);
-        file << "Transaction ID, From Account, To Account, Amount, Type, Status\n";
+        file << "Transaction ID, From Account, To Account, Amount, Type, Time, Status\n";
     }
 
     if (!file.is_open())
@@ -156,6 +167,7 @@ void appendTransactionToCSV(const User &user, const string &filename, const Tran
          << transaction.toAccountNo << ","
          << transaction.amount << ","
          << transaction.transactionType << ","
+         << transaction.dateTime << ","
          << transaction.status << "\n";
 
     file.close();
@@ -182,6 +194,21 @@ void TransactionHistory ::showTransactionHistoryPanel(void)
     {
         TransactionHistory newTransaction;
         newTransaction.transferAmount();
+    }
+
+    if(choice == 4){ 
+        exit(0);
+    }
+
+    if(choice == 5){
+        cout << "| " << setw(2) << "1." << " Create an Account             |" << endl;
+            cout << "| " << setw(2) << "2." << " Deposit Amount                |" << endl;
+            cout << "| " << setw(2) << "3." << " Withdraw Amount               |" << endl;
+            cout << "| " << setw(2) << "4." << " Admin Panel                   |" << endl;
+            cout << "| " << setw(2) << "5." << " Exit                          |" << endl;
+            cout << "| " << setw(2) << "6." << " Back                          |" << endl;
+            cout << "| " << setw(2) << "7." << " Transaction Options                          |" << endl;
+            cout << "===============================================" << endl;
     }
 }
 
@@ -238,6 +265,7 @@ void TransactionHistory ::transferAmount(void)
                     t_sender.toAccountNo = it2->accountNo;
                     t_sender.amount = amount;
                     t_sender.transactionType = "Debited";
+                    t_sender.dateTime = getCurrentDateTime();
                     t_sender.status = "Success";
 
                     it->listTransactions.push_back(t_sender);
@@ -250,6 +278,7 @@ void TransactionHistory ::transferAmount(void)
                     t_reciever.toAccountNo = it2->accountNo;
                     t_reciever.amount = amount;
                     t_reciever.transactionType = "Credited";
+                    t_reciever.dateTime = getCurrentDateTime();
                     t_reciever.status = "Success";
 
                     it2->listTransactions.push_back(t_reciever);
@@ -263,29 +292,31 @@ void TransactionHistory ::transferAmount(void)
                     // Store for reciever
                     string filename2 = it2->name + to_string(it2->accountNo) + ".csv";
                     appendTransactionToCSV(*it2, filename2, t_reciever);
+
+                    showTransactionHistoryPanel();
                 }
                 else
                 {
                     cout << "Insufficient balance" << endl;
-                    return;
+                    showTransactionHistoryPanel();
                 }
             }
             else
             {
                 cout << "User does not exists" << endl;
-                return;
+                showTransactionHistoryPanel();
             }
         }
         else
         {
             cout << "Incorrect Password" << endl;
-            return;
+            showTransactionHistoryPanel();
         }
     }
     else
     {
         cout << "Incorrect ID" << endl;
-        return;
+        showTransactionHistoryPanel();
     }
 }
 
