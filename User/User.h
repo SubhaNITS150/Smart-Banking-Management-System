@@ -40,8 +40,11 @@ public:
     void withdrawMoney(void);
 
     static void initializeID(const string &filename);
-    // long long getUserId() const { return userId; }
+
     friend class TransactionHistory;
+    friend void loadUsersFromCSV(void);
+    friend void updateCSV(void);
+    friend void saveTransactionToCSV(const User &user, const string &filename);
     friend class AdminPanel;
 };
 
@@ -148,7 +151,7 @@ void User ::createUser(void)
     this->accountType = accountType;
     this->branchName = branchName;
     this->balance = balance;
-    this -> password = password;
+    this->password = password;
     long long accountNo = 60012100 + id;
 
     // setPassword();

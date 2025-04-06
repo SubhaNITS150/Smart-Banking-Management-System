@@ -3,7 +3,7 @@
 using namespace std;
 #include "../AdminPanel/AdminPanel.h"
 
-class TransactionHistory : public User
+class TransactionHistory
 {
     long long transactionId;
     unsigned long long fromAccountNo;
@@ -14,15 +14,18 @@ class TransactionHistory : public User
     string status;
 
 public:
-    // Functions
-    void showTransactionOptions(void);
+    void showTransactionHistoryPanel(void);
     void transferAmount(void);
-    void loadUsersFromCSV(void);
-    void updateCSV(void);
-    void transactionHistory(void);
+    void printAllTransactions(void);
+
+    friend void appendTransactionToCSV(const User &user, const string &filename, const TransactionHistory &transaction);
+    friend void saveTransactionToCSV(const User &user, const string &filename);
 };
 
-void TransactionHistory :: updateCSV() {
+// ---------------------------Utility Functions----------------------------
+
+void updateCSV()
+{
     ofstream file("userlists.csv", std::ios::trunc);
 
     if (!file.is_open())
@@ -36,19 +39,19 @@ void TransactionHistory :: updateCSV() {
     for (const auto &user : User::userLists)
     {
         file << user.userId << ","
-         << user.accountNo << ","
-         << user.name << ","
-         << user.accountType << ","
-         << user.branchName << ","
-         << user.balance << ","
-         << (user.isMember ? "Yes" : "No") << ","
-         << user.password << "\n";
+             << user.accountNo << ","
+             << user.name << ","
+             << user.accountType << ","
+             << user.branchName << ","
+             << user.balance << ","
+             << (user.isMember ? "Yes" : "No") << ","
+             << user.password << "\n";
     }
 
     file.close();
 }
 
-void TransactionHistory :: loadUsersFromCSV()
+void loadUsersFromCSV(void)
 {
     ifstream file("userlists.csv");
 
@@ -98,7 +101,69 @@ void TransactionHistory :: loadUsersFromCSV()
     file.close();
 }
 
-void TransactionHistory ::showTransactionOptions(void)
+void saveTransactionToCSV(const User &user, const string &filename)
+{
+    ofstream file(filename);
+
+    if (!file.is_open())
+    {
+        std::cerr << "Error opening file for writing!" << std::endl;
+        return;
+    }
+
+    for (const auto &t : user.listTransactions)
+    {
+        file << t.transactionId << ","
+             << t.fromAccountNo << ","
+             << t.toAccountNo << ","
+             << t.amount << ","
+             << t.transactionType << ","
+             << t.status << "\n";
+    }
+}
+
+void appendTransactionToCSV(const User &user, const string &filename, const TransactionHistory &transaction)
+{
+    bool fileExists = false;
+    ifstream infile(filename);
+
+    if (infile.good())
+    {
+        fileExists = true;
+    }
+    infile.close();
+
+    ofstream file;
+
+    if (fileExists)
+    {
+        file.open(filename, ios ::app);
+    }
+    else
+    {
+        file.open(filename);
+        file << "Transaction ID, From Account, To Account, Amount, Type, Status\n";
+    }
+
+    if (!file.is_open())
+    {
+        cerr << "Error opening transaction file!" << endl;
+        return;
+    }
+
+    file << transaction.transactionId << ","
+         << transaction.fromAccountNo << ","
+         << transaction.toAccountNo << ","
+         << transaction.amount << ","
+         << transaction.transactionType << ","
+         << transaction.status << "\n";
+
+    file.close();
+}
+
+// -------------------------Member Functions-------------------------------
+
+void TransactionHistory ::showTransactionHistoryPanel(void)
 {
     cout << "===============================================" << endl;
     cout << "|        What do you want to do ?             |" << endl;
@@ -113,22 +178,29 @@ void TransactionHistory ::showTransactionOptions(void)
     int choice;
     cin >> choice;
 
-    if(choice == 1) {
+    if (choice == 1)
+    {
         TransactionHistory newTransaction;
         newTransaction.transferAmount();
     }
 }
 
 void TransactionHistory ::transferAmount(void)
-{   
+{
     loadUsersFromCSV();
-    cout << "Welcome to money transfer panel" << endl;
-    cout << "Enter ID " << endl;
+
+    cout << "Welcome to the Amount Transfer Panel" << endl;
+
+    // Fetch ID of sender
     int getID;
+    cout << "Enter the ID of sender:- " << endl;
     cin >> getID;
 
     auto it = find_if(User ::userLists.begin(), User ::userLists.end(), [&](const User &user)
                       { return user.userId == getID; });
+
+    // it -> sender
+    // it2 -> reciever
 
     if (it != User ::userLists.end())
     {
@@ -151,14 +223,46 @@ void TransactionHistory ::transferAmount(void)
                 double amount;
                 cin >> amount;
 
-                // it --> sender
-                // it2 --> reciever
                 if (it->balance >= amount)
                 {
                     it2->balance += amount;
                     it->balance -= amount;
 
                     updateCSV();
+
+                    // Sender
+                    TransactionHistory t_sender;
+
+                    t_sender.transactionId = 1;
+                    t_sender.fromAccountNo = it->accountNo;
+                    t_sender.toAccountNo = it2->accountNo;
+                    t_sender.amount = amount;
+                    t_sender.transactionType = "Debited";
+                    t_sender.status = "Success";
+
+                    it->listTransactions.push_back(t_sender);
+
+                    // Reciever
+                    TransactionHistory t_reciever;
+
+                    t_reciever.transactionId = 0;
+                    t_reciever.fromAccountNo = it->accountNo;
+                    t_reciever.toAccountNo = it2->accountNo;
+                    t_reciever.amount = amount;
+                    t_reciever.transactionType = "Credited";
+                    t_reciever.status = "Success";
+
+                    it2->listTransactions.push_back(t_reciever);
+
+                    // Store it in a different file
+
+                    // Store for sender
+                    string filename = it->name + to_string(it->accountNo) + ".csv";
+                    appendTransactionToCSV(*it, filename, t_sender);
+
+                    // Store for reciever
+                    string filename2 = it2->name + to_string(it2->accountNo) + ".csv";
+                    appendTransactionToCSV(*it2, filename2, t_reciever);
                 }
                 else
                 {
@@ -166,14 +270,12 @@ void TransactionHistory ::transferAmount(void)
                     return;
                 }
             }
-
             else
             {
                 cout << "User does not exists" << endl;
                 return;
             }
         }
-
         else
         {
             cout << "Incorrect Password" << endl;
@@ -187,15 +289,8 @@ void TransactionHistory ::transferAmount(void)
     }
 }
 
-void TransactionHistory :: transactionHistory(void){
-    loadUsersFromCSV();
-    cout << "Welcome to money transfer panel" << endl;
-    cout << "Enter ID " << endl;
-    int getID;
-    cin >> getID;
-
-    auto it = find_if(User ::userLists.begin(), User ::userLists.end(), [&](const User &user)
-                      { return user.userId == getID; });
+void TransactionHistory ::printAllTransactions(void)
+{
 }
 
 #endif

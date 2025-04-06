@@ -92,7 +92,7 @@ int main()
 
         if(choice == 7){
             TransactionHistory newTransaction;
-            newTransaction.showTransactionOptions();
+            newTransaction.showTransactionHistoryPanel();
         }
 
         cin >> choice;
