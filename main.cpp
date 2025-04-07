@@ -53,6 +53,11 @@ int main()
             choice = 5;
         }
 
+        if(choice == 2) {
+            User user;
+            user.depositMoney();
+        }
+        
         if (choice == 3)
         {
             User user;

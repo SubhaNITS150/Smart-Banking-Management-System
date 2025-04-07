@@ -1,5 +1,3 @@
-
-
 #include <bits/stdc++.h>
 #include <iomanip>
 #include <fstream>
@@ -43,8 +41,10 @@ public:
 
     friend class TransactionHistory;
     friend void loadUsersFromCSV(void);
+    friend void loadUsersFromCSV2(void);
     friend void updateCSV(void);
     friend void saveTransactionToCSV(const User &user, const string &filename);
+    friend void updateCSV2(void);
     friend class AdminPanel;
 };
 
@@ -55,6 +55,83 @@ bool isFileEmpty(const string &filename)
     ifstream file(filename);
     return file.peek() == ifstream::traits_type::eof();
 }
+
+void updateCSV2()
+{
+    ofstream outFile("userlists.csv");
+    if (!outFile.is_open())
+    {
+        cout << "Error opening file for writing!" << endl;
+        return;
+    }
+
+    outFile << "ID,Account Number,Name,Account Type,Branch Name,Balance,Membership,Password\n";
+
+    for (const auto &user : User::userLists)
+    {
+        outFile << user.userId << ","
+                << user.accountNo << ","
+                << user.name << ","
+                << user.accountType << ","
+                << user.branchName << ","
+                << fixed << setprecision(2) << user.balance << ","
+                << (user.isMember ? "Yes" : "No") << ","
+                << user.password << "\n";
+    }
+
+    outFile.close();
+}
+
+void loadUsersFromCSV2(void)
+{
+    ifstream file("userlists.csv");
+
+    if (!file.is_open())
+    {
+        cerr << "Error opening file for reading!" << endl;
+        return;
+    }
+
+    User::userLists.clear();
+
+    string line, token;
+    getline(file, line);
+
+    while (std::getline(file, line))
+    {
+        std::istringstream stream(line);
+
+        User user;
+        std::getline(stream, token, ',');
+        user.userId = std::stoi(token);
+
+        std::getline(stream, token, ',');
+        user.accountNo = std::stoi(token);
+
+        std::getline(stream, token, ',');
+        user.name = token;
+
+        std::getline(stream, token, ',');
+        user.accountType = token;
+
+        std::getline(stream, token, ',');
+        user.branchName = token;
+
+        std::getline(stream, token, ',');
+        user.balance = std::stod(token);
+
+        std::getline(stream, token, ',');
+        user.isMember = (token == "Yes");
+
+        getline(stream, token, ',');
+        user.password = token;
+
+        User::userLists.push_back(user);
+    }
+
+    file.close();
+}
+
 
 //------------------------constants---------------------------------
 long long User ::id = 1;
@@ -233,21 +310,27 @@ void User ::withdrawMoney(void)
 void User ::depositMoney(void)
 {
     int getID;
-    cout << "Enter ID:- " << endl;
+    cout << "Enter your ID" << endl;
     cin >> getID;
+
+    loadUsersFromCSV2();
 
     auto it = find_if(User ::userLists.begin(), User ::userLists.end(), [&](const User &user)
                       { return user.userId == getID; });
-
-    if (it != User ::userLists.end())
-    {
+    
+    if(it != User :: userLists.end() && it -> isMember){
+        cout << "Enter the amount you want to deposit" << endl;
         double amt;
-        cout << "Enter amount you want to withdraw:- " << endl;
+
         cin >> amt;
 
-        it->balance += amt;
-        cout << "Amount Added Successfully" << endl;
-        cout << "Balance:- " << it->balance << endl;
+        it -> balance += amt;
+        updateCSV2();
+    }
+
+    else{
+        cout << "User not registered with the bank" << endl;
+        return;
     }
 }
 
