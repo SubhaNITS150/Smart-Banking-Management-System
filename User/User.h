@@ -1,8 +1,8 @@
+
 #include <bits/stdc++.h>
 #include <iomanip>
 #include <fstream>
 #include <random>
-// #include "../AdminPanel/AdminPanel.h"
 #include "../TransactionHistory/TransactionHistory.h"
 
 #ifndef USER_H
@@ -277,27 +277,34 @@ void User ::withdrawMoney(void)
     cout << "Enter ID:- " << endl;
     cin >> getID;
 
+    loadUsersFromCSV2();
+
     auto it = find_if(User ::userLists.begin(), User ::userLists.end(), [&](const User &user)
                       { return user.userId == getID; });
 
     if (it != User ::userLists.end())
     {
-        double amt;
-        cout << "Enter amount you want to withdraw:- " << endl;
-        cin >> amt;
+        cout << "Enter password:- " << endl;
+        string pass;
+        cin >> pass;
 
-        if (amt > (it->balance))
-        {
-            cout << "Insufficient balance";
-            return;
-        }
+        if(it -> password == pass){
+            cout << "Enter the amount you want to withdraw:- " << endl;
+            double amt;
+            cin >> amt;
 
-        else
-        {
-            it->balance -= amt;
-            cout << "Amount Withdrawn Successfully" << endl;
-            cout << "Balance:- " << it->balance << endl;
-            return;
+            if(amt > it -> balance) {
+                cout << "Insufficient Balance" << endl;
+                return;
+            }
+
+            else {
+                it -> balance -= amt;
+                cout << "Amount :- " << amt << "withdrawn successfully" << endl;
+                cout << "Available balance:- " << it -> balance << endl;
+                updateCSV2();
+                return;
+            }
         }
     }
     else
@@ -326,6 +333,19 @@ void User ::depositMoney(void)
 
         it -> balance += amt;
         updateCSV2();
+        
+        // TransactionHistory t_deposit;
+        // t_deposit.transactionId = 1;
+        // t_deposit.fromAccountNo = it -> accountNo;
+        // t_deposit.toAccountNo = it -> accountNo;
+        // t_deposit.amount = amt;
+        // t_deposit.transactionType = "Deposit";
+        // t_deposit.dateTime = getCurrentDateTime();
+        // t_deposit.status = "Success";
+
+        // it -> listTransactions.push_back(t_deposit);
+        // string filename = it->name + to_string(it->accountNo) + ".csv";
+        // TransactionHistory :: appendTransactionToCSV(*it, filename, t_deposit);
     }
 
     else{

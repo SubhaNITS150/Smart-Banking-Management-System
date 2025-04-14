@@ -1,5 +1,5 @@
-#ifndef TRANSACTIONHISTORY_H
-#define TRANSACTIONHISTORY_H
+#ifndef TRANSACTION_HISTORY_H
+#define TRANSACTION_HISTORY_H
 using namespace std;
 #include "../AdminPanel/AdminPanel.h"
 #include <chrono>
@@ -15,12 +15,14 @@ class TransactionHistory
     string status;
 
 public:
+    
     void showTransactionHistoryPanel(void);
     void transferAmount(void);
     void printAllTransactions(void);
 
     friend void appendTransactionToCSV(const User &user, const string &filename, const TransactionHistory &transaction);
     friend void saveTransactionToCSV(const User &user, const string &filename);
+    friend void User :: depositMoney(void);
 };
 
 // ---------------------------Utility Functions----------------------------
