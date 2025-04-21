@@ -239,8 +239,10 @@ void TransactionHistory ::transferAmount(void)
         cout << "Enter your password:- " << endl;
         string password;
         cin >> password;
+        PasswordManager pm;
+        bool checkPwd = pm.checkPassword(password, it -> password);
 
-        if (password == it->password)
+        if (checkPwd)
         {
             cout << "Enter the account number of the receipent:- " << endl;
             long long accNo;
