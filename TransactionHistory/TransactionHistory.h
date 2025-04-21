@@ -4,6 +4,7 @@ using namespace std;
 #include "../AdminPanel/AdminPanel.h"
 #include <chrono>
 
+
 class TransactionHistory
 {
     long long transactionId;
@@ -20,6 +21,7 @@ public:
     void transferAmount(void);
     void printAllTransactions(void);
 
+    friend void saveDebitTransaction(const User &user, const string &filename, double amt);
     friend void appendTransactionToCSV(const User &user, const string &filename, const TransactionHistory &transaction);
     friend void saveTransactionToCSV(const User &user, const string &filename);
     friend void User :: depositMoney(void);
@@ -36,6 +38,7 @@ std::string getCurrentDateTime() {
     oss << std::put_time(localTime, "%Y-%m-%d %H:%M:%S");
     return oss.str();
 }
+
 
 void updateCSV()
 {

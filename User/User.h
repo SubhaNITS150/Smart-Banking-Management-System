@@ -4,6 +4,7 @@
 #include <fstream>
 #include <random>
 #include "../TransactionHistory/TransactionHistory.h"
+#include "../PasswordHasher/PasswordManager.h"
 
 #ifndef USER_H
 #define USER_H
@@ -46,6 +47,13 @@ public:
     friend void saveTransactionToCSV(const User &user, const string &filename);
     friend void updateCSV2(void);
     friend class AdminPanel;
+
+    //Getters and setters (for Loan.h)
+    int getUserId() const {return userId;}
+    string getPassword() const {return password;}
+    string getName() {return name;}
+    long long getAccountNo() {return accountNo;}
+    double getBalance() {return balance;}
 };
 
 //----------------utility functions---------------------------
@@ -222,13 +230,17 @@ void User ::createUser(void)
     string password;
     cin >> password;
 
+    //HAsh the password
+    PasswordManager pwdmanager;
+    string hashPwd = pwdmanager.hashPassword(password);
+
     this->id = User ::id;
     this->name = name;
     
     this->accountType = accountType;
     this->branchName = branchName;
     this->balance = balance;
-    this->password = password;
+    this->password = hashPwd;
     long long accountNo = 60012100 + id;
     this->accountNo = accountNo;
     
@@ -258,7 +270,7 @@ void User ::createUser(void)
          << branchName << ","
          << balance << ","
          << (isMember ? "Yes" : "No") << ","
-         << password << "\n";
+         << hashPwd << "\n";
 
     file.close();
 
@@ -288,7 +300,10 @@ void User ::withdrawMoney(void)
         string pass;
         cin >> pass;
 
-        if(it -> password == pass){
+        PasswordManager pm;
+        bool checkPwd = pm.checkPassword(pass, it -> password);
+
+        if(checkPwd){
             cout << "Enter the amount you want to withdraw:- " << endl;
             double amt;
             cin >> amt;
@@ -305,6 +320,10 @@ void User ::withdrawMoney(void)
                 updateCSV2();
                 return;
             }
+        }
+        else{
+            cout << "Incorrect Password entered" << endl;
+            return;
         }
     }
     else
@@ -333,19 +352,9 @@ void User ::depositMoney(void)
 
         it -> balance += amt;
         updateCSV2();
-        
-        // TransactionHistory t_deposit;
-        // t_deposit.transactionId = 1;
-        // t_deposit.fromAccountNo = it -> accountNo;
-        // t_deposit.toAccountNo = it -> accountNo;
-        // t_deposit.amount = amt;
-        // t_deposit.transactionType = "Deposit";
-        // t_deposit.dateTime = getCurrentDateTime();
-        // t_deposit.status = "Success";
 
-        // it -> listTransactions.push_back(t_deposit);
-        // string filename = it->name + to_string(it->accountNo) + ".csv";
-        // TransactionHistory :: appendTransactionToCSV(*it, filename, t_deposit);
+        // saveDebitTransaction(*it, filename, amt);
+        // cout << "Transaction saved" << endl;
     }
 
     else{

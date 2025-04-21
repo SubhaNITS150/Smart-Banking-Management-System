@@ -20,7 +20,7 @@ public:
     void updateUserDetails(void);
     void loadUsersFromCSV(void);
     void updateCSV(void);
-    void totalAmountInBank(void);
+    long long totalAmountInBank(void);
     string getPassword(void);
 };
 
@@ -318,7 +318,7 @@ void AdminPanel ::updateUserDetails(void)
     }
 }
 
-void AdminPanel :: totalAmountInBank(void) {
+long long AdminPanel :: totalAmountInBank(void) {
     loadUsersFromCSV();
     long long sum = 0;
 
@@ -327,6 +327,7 @@ void AdminPanel :: totalAmountInBank(void) {
     }
 
     cout << "Total amount in bank:- " << sum << endl;
+    return sum;
 }
 
 #endif
