@@ -51,6 +51,7 @@ public:
     //Getters and setters (for Loan.h)
     void setUserId(int userId) { this->id = userId;}
     void setBalance(double balance) {this -> balance = balance;}
+    void setName(string name) {this -> name = name;}
 
     int getUserId() const {return userId;}
     string getPassword() const {return password;}

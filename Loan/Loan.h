@@ -23,6 +23,7 @@ public:
     void showLoanPanel(void);
     int calculateCreditScore(int baseScore, int validUpto, int repaidIn);
     void seekLoan(void);
+    void payLoanAmount(void);
 
     // Getters and Setters
     int getCreditScore() const
@@ -54,29 +55,43 @@ public:
 static vector<Loan> loanLists;
 
 // Utility functions
-void showLoanLists(vector<Loan> &loanLists)
-{
-    if (loanLists.empty())
-    {
-        cout << "No loan records available." << endl;
+bool fileExists(const std::string& filename) {
+    std::ifstream infile(filename.c_str());
+    return infile.good();
+}
+
+void writeCSVForLoan(void) {
+    string filename = "loanlists.csv";
+    bool fileAlreadyExists = fileExists(filename);
+    ofstream outFile(filename.c_str(), std::ios::out);
+
+    if (!outFile.is_open()) {
+        std::cerr << "Failed to open or create " << filename << std::endl;
         return;
     }
 
-    cout << "\n+-------------------------------------------------------------+" << endl;
-    cout << "|                      All Loan Records                       |" << endl;
-    cout << "+-------------------------------------------------------------+" << endl;
-
-    for (const auto &loan : loanLists)
-    {
-        cout << "User ID         : " << loan.getUserId() << endl;
-        cout << "Credit Score    : " << loan.getCreditScore() << endl;
-        cout << "Loan Amount     : ₹" << loan.getLoanAmount() << endl;
-        cout << "Interest Rate   : " << loan.getInterestRate() << " %" << endl;
-        cout << "Loan Duration   : " << loan.getLoanDuration() << " months" << endl;
-        cout << "Status          : " << loan.getStatus() << endl;
-        cout << "+-------------------------------------------------------------+" << endl;
+    if(!fileAlreadyExists) {
+        outFile << "ID,Credit Score,Loan Amount,Interest Rate,Loan Duration,Status" << endl;
     }
+
+    for(const Loan &loan : loanLists){
+        outFile << loan.getUserId() << ","
+                << loan.getCreditScore() << ","
+                << loan.getLoanAmount() << ","
+                << loan.getInterestRate() << ","
+                << loan.getLoanDuration() << ","
+                << loan.getStatus() << endl;
+    }
+    outFile.close();
+    cout << "Data downloaded:- " << filename << " successfully." << endl;
 }
+
+void showLoanLists(vector<Loan> &loanLists)
+{
+   writeCSVForLoan();
+}
+
+//Class functions
 
 void Loan ::showLoanPanel(void)
 {
@@ -93,7 +108,7 @@ void Loan ::showLoanPanel(void)
 
     cout << "|  1. Seek Loan                        |" << endl;
     cout << "|  2. Pay Loan Amount                  |" << endl;
-    cout << "|  3. Back                             |" << endl;
+    cout << "|  3. Show Loan List                   |" << endl;
     cout << "+--------------------------------------+" << endl;
 
     int choice;
@@ -108,6 +123,10 @@ void Loan ::showLoanPanel(void)
 
     if (choice == 2)
     {
+    }
+
+    if(choice == 3){
+        showLoanLists(loanLists);
     }
 
     else
@@ -165,6 +184,7 @@ void Loan ::seekLoan(void)
 
                 Loan userLoan;
                 userLoan.userId = getID;
+                userLoan.setName(it -> getName());
                 userLoan.creditScore = creditScore;
                 userLoan.loanAmount = loanAmount;
                 userLoan.interestRate = interestRate;
@@ -175,10 +195,15 @@ void Loan ::seekLoan(void)
             }
             it->setBalance(it->getBalance() + loanAmount);
             updateCSV2();
+
+            cout << "Loan Granted Succesfully!" << endl;
         }
     }
+}
 
-    showLoanLists(loanLists);
+void Loan :: payLoanAmount(void){
+    //Calculate LOan Amount to be paid
+
 }
 
 #endif

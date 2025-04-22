@@ -22,17 +22,24 @@ int main()
     cout << endl;
     cout << endl;
 
+    auto now = chrono::system_clock::now();
+    time_t currentTime = chrono::system_clock::to_time_t(now);
+    tm *localTime = localtime(&currentTime);
+
     cout << "===============================================" << endl;
     cout << "|        What do you want to do today?        |" << endl;
     cout << "===============================================" << endl;
+    cout << "|   Date: " << put_time(localTime, "%Y-%m-%d")
+         << "  Time: " << put_time(localTime, "%H:%M:%S") << "   |" << endl;
+    cout << "+--------------------------------------+" << endl;
     cout << "| " << setw(2) << "1." << " Create an Account             |" << endl;
     cout << "| " << setw(2) << "2." << " Deposit Amount                |" << endl;
     cout << "| " << setw(2) << "3." << " Withdraw Amount               |" << endl;
     cout << "| " << setw(2) << "4." << " Admin Panel                   |" << endl;
     cout << "| " << setw(2) << "5." << " Exit                          |" << endl;
     cout << "| " << setw(2) << "6." << " Back                          |" << endl;
-    cout << "| " << setw(2) << "7." << " Transaction Options                          |" << endl;
-    cout << "| " << setw(2) << "8." << " Loan                           |" << endl;
+    cout << "| " << setw(2) << "7." << " Transaction Options           |" << endl;
+    cout << "| " << setw(2) << "8." << " Loan                          |" << endl;
     cout << "===============================================" << endl;
 
     int choice;
