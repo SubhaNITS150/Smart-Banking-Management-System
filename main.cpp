@@ -2,8 +2,9 @@
 #include "User/User.h"
 #include "AdminPanel/AdminPanel.h"
 #include "TransactionHistory/TransactionHistory.h"
+#include "Loan/Loan.h"
 
-using namespace std; 
+using namespace std;
 
 void printHeader()
 {
@@ -31,6 +32,7 @@ int main()
     cout << "| " << setw(2) << "5." << " Exit                          |" << endl;
     cout << "| " << setw(2) << "6." << " Back                          |" << endl;
     cout << "| " << setw(2) << "7." << " Transaction Options                          |" << endl;
+    cout << "| " << setw(2) << "8." << " Loan                           |" << endl;
     cout << "===============================================" << endl;
 
     int choice;
@@ -53,11 +55,12 @@ int main()
             choice = 5;
         }
 
-        if(choice == 2) {
+        if (choice == 2)
+        {
             User user;
             user.depositMoney();
         }
-        
+
         if (choice == 3)
         {
             User user;
@@ -92,12 +95,20 @@ int main()
             cout << "| " << setw(2) << "5." << " Exit                          |" << endl;
             cout << "| " << setw(2) << "6." << " Back                          |" << endl;
             cout << "| " << setw(2) << "7." << " Transaction Options                          |" << endl;
+            cout << "| " << setw(2) << "8." << " Loan                           |" << endl;
             cout << "===============================================" << endl;
         }
 
-        if(choice == 7){
+        if (choice == 7)
+        {
             TransactionHistory newTransaction;
             newTransaction.showTransactionHistoryPanel();
+        }
+
+        if (choice == 8)
+        {
+            Loan loan;
+            loan.showLoanPanel();
         }
 
         cin >> choice;

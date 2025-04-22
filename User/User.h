@@ -49,11 +49,15 @@ public:
     friend class AdminPanel;
 
     //Getters and setters (for Loan.h)
+    void setUserId(int userId) { this->id = userId;}
+    void setBalance(double balance) {this -> balance = balance;}
+
     int getUserId() const {return userId;}
     string getPassword() const {return password;}
     string getName() {return name;}
     long long getAccountNo() {return accountNo;}
     double getBalance() {return balance;}
+
 };
 
 //----------------utility functions---------------------------

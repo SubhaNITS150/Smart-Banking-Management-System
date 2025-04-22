@@ -5,5 +5,5 @@ using namespace std;
 int main() {
     Loan loan;
     
-    loan.showLoanPanel();
+    loan.seekLoan();
 }
