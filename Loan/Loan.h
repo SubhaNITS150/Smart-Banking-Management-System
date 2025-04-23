@@ -203,6 +203,7 @@ void Loan ::showLoanPanel(void)
     cout << "|  1. Seek Loan                        |" << endl;
     cout << "|  2. Pay Loan Amount                  |" << endl;
     cout << "|  3. Show Loan List                   |" << endl;
+    cout << "|  4. Back                             |" << endl;
     cout << "+--------------------------------------+" << endl;
 
     int choice;
@@ -224,6 +225,22 @@ void Loan ::showLoanPanel(void)
     if (choice == 3)
     {
         showLoanLists(loanLists);
+    }
+
+    if (choice == 4)
+    {
+        cout << "==========================================================" << endl;
+        cout << "| " << setw(2) << "1." << " Create an Account             |" << endl;
+        cout << "| " << setw(2) << "2." << " Deposit Amount                |" << endl;
+        cout << "| " << setw(2) << "3." << " Withdraw Amount               |" << endl;
+        cout << "| " << setw(2) << "4." << " Admin Panel                   |" << endl;
+        cout << "| " << setw(2) << "5." << " Exit                          |" << endl;
+        cout << "| " << setw(2) << "6." << " Back                          |" << endl;
+        cout << "| " << setw(2) << "7." << " Transaction Options           |" << endl;
+        cout << "| " << setw(2) << "8." << " Loan                          |" << endl;
+        cout << "==========================================================" << endl;
+
+        return;
     }
 
     else
@@ -369,7 +386,7 @@ void Loan ::payLoanAmount(void)
                 else
                 {
                     cout << "Loan Amount Paid Successfully!" << endl;
-                    it2->setBalance(it2 -> getBalance() - loanAmountToPayPerMonth);
+                    it2->setBalance(it2->getBalance() - loanAmountToPayPerMonth);
                     cout << "Remaining Loan Amount:- Rs. " << loanAmountToPay - loanAmountToPayPerMonth << endl;
                     it->creditScore += 20;
                     it->loanAmount = loanAmountToPay - loanAmountToPayPerMonth;

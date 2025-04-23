@@ -26,14 +26,19 @@ public:
 
 void AdminPanel ::showAdminPanel(void)
 {
-    cout << "Welcome to the Admin Panel" << endl;
-    cout << "1. View Users" << endl;
-    cout << "2. Delete User" << endl;
-    cout << "3. Find User" << endl;
-    cout << "4. Change Password of an User" << endl;
-    cout << "5. Update User Details" << endl;
-    cout << "6. Back to Main Menu" << endl;
-    cout << "7. Display Total Amount in Bank" << endl;
+    cout << "+---------------------------------------------+" << endl;
+    cout << "|             Welcome to Admin Panel          |" << endl;
+    cout << "+----------------+----------------------------+" << endl;
+    cout << "| Option Number  |          Action            |" << endl;
+    cout << "+----------------+----------------------------+" << endl;
+    cout << "|       1        | View Users                 |" << endl;
+    cout << "|       2        | Delete User                |" << endl;
+    cout << "|       3        | Find User                  |" << endl;
+    cout << "|       4        | Change Password of a User  |" << endl;
+    cout << "|       5        | Update User Details        |" << endl;
+    cout << "|       6        | Back to Main Menu          |" << endl;
+    cout << "|       7        | Display Total Amount in Bank |" << endl;
+    cout << "+----------------+----------------------------+" << endl;
 
     cout << "Enter what you want to do:- " << endl;
     int choice;
@@ -70,7 +75,16 @@ void AdminPanel ::showAdminPanel(void)
 
     else
     {
-        showAdminPanel();
+        cout << "| " << setw(2) << "1." << " Create an Account             |" << endl;
+        cout << "| " << setw(2) << "2." << " Deposit Amount                |" << endl;
+        cout << "| " << setw(2) << "3." << " Withdraw Amount               |" << endl;
+        cout << "| " << setw(2) << "4." << " Admin Panel                   |" << endl;
+        cout << "| " << setw(2) << "5." << " Exit                          |" << endl;
+        cout << "| " << setw(2) << "6." << " Back                          |" << endl;
+        cout << "| " << setw(2) << "7." << " Transaction Options                          |" << endl;
+        cout << "| " << setw(2) << "8." << " Loan                           |" << endl;
+        cout << "===============================================" << endl;
+        return;
     }
 }
 
@@ -284,24 +298,26 @@ void AdminPanel ::updateUserDetails(void)
     cout << "Enter ID:- " << endl;
     cin >> getID;
 
+    loadUsersFromCSV();
+
     auto it = find_if(User ::userLists.begin(), User ::userLists.end(), [&](const User &user)
                       { return user.userId == getID; });
 
     if (it != User::userLists.end())
     {
         string name;
-        cin >> name;
         cout << "Enter name:- " << endl;
+        cin >> name;
         it->name = name;
 
         string accountType;
-        cin >> accountType;
         cout << "Enter account type:- " << endl;
+        cin >> accountType;
         it->accountType = accountType;
 
         string branchName;
-        cin >> branchName;
         cout << "Enter branch name:- " << endl;
+        cin >> branchName;
         it->branchName = branchName;
 
         cout << "Updated Details:- " << endl;
@@ -316,6 +332,8 @@ void AdminPanel ::updateUserDetails(void)
              << it->branchName << setw(12) << fixed << setprecision(2) << it->balance << endl;
         cout << "---------------------------------------------\n";
     }
+
+    updateCSV();
 }
 
 long long AdminPanel :: totalAmountInBank(void) {
