@@ -186,10 +186,8 @@ void TransactionHistory ::showTransactionHistoryPanel(void)
     cout << "|        What do you want to do ?             |" << endl;
     cout << "===============================================" << endl;
     cout << "| " << setw(2) << "1." << " Transfer amount               |" << endl;
-    cout << "| " << setw(2) << "2." << " Get Specific Transactions      |" << endl;
-    cout << "| " << setw(2) << "3." << " Print all Transactions         |" << endl;
-    cout << "| " << setw(2) << "4." << " Exit                            |" << endl;
-    cout << "| " << setw(2) << "5." << " Back                            |" << endl;
+    cout << "| " << setw(2) << "2." << " Exit                            |" << endl;
+    cout << "| " << setw(2) << "3." << " Back                            |" << endl;
     cout << "===============================================" << endl;
 
     int choice;
@@ -201,11 +199,11 @@ void TransactionHistory ::showTransactionHistoryPanel(void)
         newTransaction.transferAmount();
     }
 
-    if(choice == 4){ 
+    if(choice == 2){ 
         exit(0);
     }
 
-    if(choice == 5){
+    if(choice == 3){
         cout << "| " << setw(2) << "1." << " Create an Account             |" << endl;
             cout << "| " << setw(2) << "2." << " Deposit Amount                |" << endl;
             cout << "| " << setw(2) << "3." << " Withdraw Amount               |" << endl;
