@@ -49,7 +49,7 @@ public:
     friend class AdminPanel;
 
     //Getters and setters (for Loan.h)
-    void setUserId(int userId) { this->id = userId;}
+    void setUserId(int userId) { this->userId = userId;}
     void setBalance(double balance) {this -> balance = balance;}
     void setName(string name) {this -> name = name;}
 
